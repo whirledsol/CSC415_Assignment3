@@ -9,6 +9,7 @@
 #include "Site.h"
 #include <string>
 #include <cmath>
+#include <sstream>
 using namespace std;
 
 
@@ -22,7 +23,7 @@ Site::Site(int an_id, string a_name, string a_status, string a_remediationStatus
    contaminationType = a_contaminationType;
    x = a_x;
    y = a_y;
-
+   tempDistance = -1.0;
 }
 
 Site::Site(){
@@ -30,20 +31,34 @@ Site::Site(){
 }
 
 //getters
-int Site::getId(){
+int Site::getId() const{
     return id;
 }
-long Site::getX(){
+long Site::getX() const{
     return x;
 }
-long Site::getY(){
+long Site::getY() const{
     return y;
 }
-string Site::getStatus(){
+string Site::getStatus() const{
     return status;
 }
-string Site::getName(){
+string Site::getRemediationStatus() const{
+	return remediationStatus;
+}
+string Site::getContaminationType() const{
+	return contaminationType;
+}
+string Site::getName() const{
     return name;
+}
+double Site::getTempDistance() const{
+	
+}
+
+//setter
+void Site::setTempDistance(double tempDis){
+	tempDistance = tempDis;
 }
 
 /**
@@ -54,25 +69,33 @@ double Site::getDistance(long inputX, long inputY){
     distance = sqrt(pow(inputX-x,2)+pow(inputY-y,2));
     return distance;
 }
+
 /**
  * toString: returns a readable display of the site for debugging purposes
  */
 string Site::toString() const{
-    return name;
+	stringstream ss;
+	ss << id << "," << name << "," << status << "," << remediationStatus << "," << contaminationType << "," << x << "," << y;
+	return ss.str();
 }
 
 /**
  * overloads the equality opperator
  */
-/* //DELETE IF NOT USED
- bool Site::operator== (const Site& other) const{
+ bool Site::operator== (Site &other) const{
  
   //two sites are equal if their ids are equal
-  bool condition = this->id == other.getId();
- 
+  bool condition = id == other.getId();
+  condition = condition && name == other.getName();
+  condition = condition && x == other.getX();
+  condition = condition && y == other.getY();
+  condition = condition && x == other.getX();
+  condition = condition && remediationStatus == other.getRemediationStatus();
+  condition = condition && status == other.getStatus();
+  condition = condition && contaminationType == other.getContaminationType();
   return condition;
   
-}*/
+}
 
 
 

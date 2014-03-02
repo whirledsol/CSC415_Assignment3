@@ -11,15 +11,19 @@
 class Site {
 	public:
         Site(int an_id, std::string a_name, std::string a_status, std::string a_remediationStatus, std::string a_contaminationType, long a_x, long a_y);  // Default constructor
-        Site();
-	int getId();
-        long getX();
-        long getY();
-        std::string getStatus();
-        std::string getName();
+        Site(); // empty constructor
+	int getId() const;
+        long getX() const;
+        long getY() const;
+        std::string getStatus() const;
+	std::string getRemediationStatus() const;
+	std::string getContaminationType() const;
+        std::string getName() const;
+	double getTempDistance() const;
+	void setTempDistance(double tempDis);
         std::string toString() const;
         double getDistance(long inputX, long inputY);
-	//bool operator== (const Site& other) const;//DELETE TODO
+	bool operator== (Site &other) const;
     private:
         int id;
         std::string name;
@@ -28,4 +32,5 @@ class Site {
         std::string contaminationType;
         long x;
         long y;
+	double tempDistance; //used as a temporarily placement for distance between the user-input site and this site
 		};
