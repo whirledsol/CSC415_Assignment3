@@ -69,14 +69,14 @@ int main(){
 			default:
 				//a non-specified value was inputed
 				cout<<"Invalid input."<<endl;
-				decision !='x';//exit
+				decision ='x';//exit
 				break;
 			}//end case
 		}
 		else{
 			//input was not a char
 			cout<<"Invalid input."<<endl;
-			decision !='x'; //exit
+			decision ='x'; //exit
 		}
 		
 		
