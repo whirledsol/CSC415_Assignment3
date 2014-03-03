@@ -52,14 +52,7 @@ string Site::getContaminationType() const{
 string Site::getName() const{
     return name;
 }
-double Site::getTempDistance() const{
-	
-}
 
-//setter
-void Site::setTempDistance(double tempDis){
-	tempDistance = tempDis;
-}
 
 /**
  * getDistance: returns the distance between the site object and the input x and y

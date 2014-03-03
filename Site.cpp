@@ -23,7 +23,6 @@ Site::Site(int an_id, string a_name, string a_status, string a_remediationStatus
    contaminationType = a_contaminationType;
    x = a_x;
    y = a_y;
-   tempDistance = -1.0;
 }
 
 Site::Site(){
@@ -52,14 +51,7 @@ string Site::getContaminationType() const{
 string Site::getName() const{
     return name;
 }
-double Site::getTempDistance() const{
-	
-}
 
-//setter
-void Site::setTempDistance(double tempDis){
-	tempDistance = tempDis;
-}
 
 /**
  * getDistance: returns the distance between the site object and the input x and y

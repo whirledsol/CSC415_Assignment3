@@ -16,7 +16,7 @@ using namespace std;
 constructor
 */
 SiteList::SiteList(){
- arrayLength = 0;
+	arrayLength = 0;
 }
 
 
@@ -36,10 +36,13 @@ bool SiteList::addNew(){
 	
 	//ask the user for input
 	cout<<"#######################\nADD A NEW SITE"<<endl;
-	
-	//assume id is the next in the series
-	id = arrayLength;
-
+	cout<<"Input Id"<<endl;
+	if (!(cin >> id))
+	{
+		cout<<"Invalid input"<<endl;
+		return false;
+	}
+	cin.ignore(); //needed to work with getline and cin
 	cout<<"Input Name"<<endl;
 	getline(cin, name);
 	cout<<"Input Status"<<endl;
@@ -98,7 +101,16 @@ bool SiteList::addNew(Site newSite){
  */
 string SiteList::getStatus(long x, long y){
   
-  cout<<"NOT IMPLEMENTED YET"<<endl;
+	int foundAt = findSite(x,y);
+	if(foundAt >= 0){
+		//the coordinates belong in the array at position foundAt
+		return sites[foundAt].getStatus();
+	}
+	else{
+		//WE MUST PREDICT
+		string predictedStatus = predict(x,y);
+		return predictedStatus;
+	}
   return "";
   
 }
@@ -111,14 +123,12 @@ string SiteList::getStatus(){
   cout<<"Specify the X coordinate:"<<endl;
   if (!(cin >> x))
   {
-	cout<<"Invalid Input"<<endl;
-	return "";
+	return "Invalid Input";
   }
   
   cout<<"Specify the Y coordinate:"<<endl;
   if(!(cin>>y)){
-	cout<<"Invalid Input"<<endl;
-	return "";
+	return "Invalid Input";
   }
 
   string returning = getStatus(x,y);
@@ -235,23 +245,52 @@ int SiteList::findSite(string name){
  * controls the status prediction of a point
  */
 string SiteList::predict(long x, long y){
-  cout<<"NOT IMPLEMENTED YET"<<endl;
+	cout<<"Predicting"<<endl;
+	Site closest[5];//create an empty array
+	getClosest(closest,x,y);//pass to getClosest
+	for(int i=0;i<5;i++){
+		cout<<closest[i].getDistance(x,y)<<" "<<closest[i].getStatus()<<endl;
+	}
+	
   return "";  
 }
 
 /*
  * returns the five closest sites
  */
-int SiteList::getClosest(Site closest[], long x, long y){
-  cout<<"NOT IMPLEMENTED YET"<<endl;
-  return -1;  
+void SiteList::getClosest(Site closest[], long x, long y){
+  	cout<<"Getting closest sites"<<endl;
+	Site sortedSites[600] = sites;
+	sortArray(sortedSites, x, y);
+	for(int i=0;i<5;i++){
+		closest[i] = sortedSites[i];
+	}
+	
+  return;  
 }
 
 /*
  * sorts the array based on distance 
  */
-bool SiteList::sortArray(long x, long y){
-  cout<<"NOT IMPLEMENTED YET"<<endl;
-  return false;
-  
+void SiteList::sortArray(Site incomingArray[], long x, long y){
+
+	//insertion sort
+	
+	//go through array with i being the partition between sorted and unsorted
+	for (int i=1; i<arrayLength;i++)
+	{
+		//new item to the sorted partition gets stored temporarily
+		Site tempSite = incomingArray[i];
+		double tempDis = incomingArray[i].getDistance(x,y);		
+		
+		int j;//must define outside for
+
+		//find the j where the new item fits and shift everything over one until
+		for(j = i-1; j>=0 && tempDis < incomingArray[j].getDistance(x,y);j--){
+			incomingArray[j+1] = incomingArray[j];	//shift over
+		}
+		incomingArray[j+1] = tempSite;		//insert
+
+	}  
 }
+

@@ -32,5 +32,4 @@ class Site {
         std::string contaminationType;
         long x;
         long y;
-	double tempDistance; //used as a temporarily placement for distance between the user-input site and this site
 		};

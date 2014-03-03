@@ -47,8 +47,8 @@ int main(){
 				mySites.addNew();
     				break;
 			case 's':
-				//STATUS: gets or predicts the status of a site
-				mySites.getStatus();
+				//STATUS: gets or predicts the status of a point
+				cout<<"The status is: "<<mySites.getStatus()<<endl;
     				break;
 			case 'o':
 				//OUTPUT: writes a CSV
@@ -58,7 +58,7 @@ int main(){
 				//HELP: Shows a list of commands
 				cout<<setw(10)<<"Command"<<setw(30)<<"Action"<<endl;
 				cout<<setw(10)<<"a"<<setw(30)<<"Add a New Site"<<endl;
-				cout<<setw(10)<<"s"<<setw(30)<<"Predict the status"<<endl;
+				cout<<setw(10)<<"s"<<setw(30)<<"Get/Predict the status"<<endl;
 				cout<<setw(10)<<"o"<<setw(30)<<"Output List"<<endl;
 				cout<<setw(10)<<"h"<<setw(30)<<"Help"<<endl;
 				cout<<setw(10)<<"x"<<setw(30)<<"Exit this Program"<<endl;
@@ -105,7 +105,7 @@ SiteList parseFile(string filename){
 	}
 	else{
 		//we opened the file
-		
+		int lineInFile = 0;//keeps track of what line we're on
 		//loop until the end of the file contents		
 		while(!fin.eof()){
 			//assumption: each line contains 7 fields in the same order
@@ -130,10 +130,14 @@ SiteList parseFile(string filename){
 			tempX = atol(tempX_str.c_str());
 			tempY = atol(tempY_str.c_str());
 			
-			//create a site
-			tempSite = Site(tempId,tempName,tempStatus,tempRemStatus,tempType,tempX,tempY);
-			//add site to SiteList			
-			mySites.addNew(tempSite);
+			//create a site, but only after the first line
+			if(lineInFile > 0){
+				tempSite = Site(tempId,tempName,tempStatus,tempRemStatus,tempType,tempX,tempY);
+			
+				//add site to SiteList			
+				mySites.addNew(tempSite);
+			}
+			lineInFile++; //going to the next line
 		}
 	}
 	

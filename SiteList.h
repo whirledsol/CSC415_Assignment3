@@ -30,8 +30,8 @@ class SiteList {
 		int findSite(long x, long y);//finds the first site with the matching x and y
 		int findSite(std::string name); //finds the first site with the matching name
 		std::string predict(long x, long y);//controls the status prediction of a point
-		int getClosest(Site closest[], long x, long y);//returns the five closest sites
-		bool sortArray(long x, long y); //sorts the array based on distance
+		void getClosest(Site closest[], long x, long y);//returns the five closest sites
+		void sortArray(Site incomingArray[], long x, long y); //sorts the array based on distance
 		
 };
 		

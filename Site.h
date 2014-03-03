@@ -19,8 +19,6 @@ class Site {
 	std::string getRemediationStatus() const;
 	std::string getContaminationType() const;
         std::string getName() const;
-	double getTempDistance() const;
-	void setTempDistance(double tempDis);
         std::string toString() const;
         double getDistance(long inputX, long inputY);
 	bool operator== (Site &other) const;
@@ -32,5 +30,4 @@ class Site {
         std::string contaminationType;
         long x;
         long y;
-	double tempDistance; //used as a temporarily placement for distance between the user-input site and this site
 		};
