@@ -14,24 +14,25 @@ class SiteList {
 		
 		SiteList(); //constructor
 		bool addNew(); //adds a new site
-		bool addNew(Site newSite);//adds a new site with known Site
-		std::string getStatus(long x, long y);//returns the status of a point, whether it is a site or not
+		bool addNew(Site);//adds a new site with known Site
+		std::string getStatus(long, long);//returns the status of a point, whether it is a site or not
 		std::string getStatus();//returns the status of a user-defined point
 		//void getArray(Site[] into,int size);//takes the array and puts it into "into" by reference
 		int size();//gets the size of the array
-		bool writeCSV(std::string location);//writes a CSV output to a location
+		bool writeCSV(std::string);//writes a CSV output to a location
 		bool writeCSV();//writes a CSV output to a user-defined location
-		
+        bool parseFromFile();//asks for user input and parses file into sites
+        bool parseFromFile(std::string);//parses file into sites
+    
 	private:
 		Site sites[600];//attr for the list of sites
 		int arrayLength;
 		
-		int findSite(Site newSite);//finds the first index of a site in the 
-		int findSite(long x, long y);//finds the first site with the matching x and y
-		int findSite(std::string name); //finds the first site with the matching name
-		std::string predict(long x, long y);//controls the status prediction of a point
-		void getClosest(Site closest[], long x, long y);//returns the five closest sites
-		void sortArray(Site incomingArray[], long x, long y); //sorts the array based on distance
-		
+		int findSite(long, long);//finds the first site with the matching x and y
+		int findSite(std::string); //finds the first site with the matching name
+		std::string predict(long, long);//controls the status prediction of a point
+		void getClosest(Site[], long, long);//returns the five closest sites
+		void sortArray(Site[], long, long); //sorts the array based on distance
+		void copyArray(const Site[], Site[]);//copies the contents of one array to another
 };
 		

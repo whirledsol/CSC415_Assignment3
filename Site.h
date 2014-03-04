@@ -10,18 +10,16 @@
 
 class Site {
 	public:
-        Site(int an_id, std::string a_name, std::string a_status, std::string a_remediationStatus, std::string a_contaminationType, long a_x, long a_y);  // Default constructor
+        Site(int, std::string, std::string, std::string, std::string, long, long);  // Default constructor
         Site(); // empty constructor
-	int getId() const;
+        int getId() const;
         long getX() const;
         long getY() const;
         std::string getStatus() const;
-	std::string getRemediationStatus() const;
-	std::string getContaminationType() const;
         std::string getName() const;
         std::string toString() const;
-        double getDistance(long inputX, long inputY);
-	bool operator== (Site &other) const;
+        bool hasSurroundingContamination() const;
+        double getDistance(long, long);
     private:
         int id;
         std::string name;

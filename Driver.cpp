@@ -27,12 +27,12 @@ int main(){
 	string filename;
 	SiteList mySites;
 	char decision = 'f';
-
-	//ask user for file location
-	cout<<"What file would like to input?"<<endl;
-	cin>>filename;
-	mySites = parseFile(filename); //parse the file
-	
+    bool fileImportSucceeded;
+    
+    while(!fileImportSucceeded){
+        fileImportSucceeded = mySites.parseFromFile(); //parse the file
+	}
+    
 	//constantly ask user for input until 'x' is printed
 	while(decision !='x'){
 		
@@ -86,60 +86,4 @@ int main(){
 	return 0;
 }
 
-/**
-* parseFile(string filename): assumes a csv file of sites with 7 elements each. Parses into SiteList object.
-*/
-SiteList parseFile(string filename){
-	
-	//declarations
-	ifstream fin;
-	SiteList mySites;
-	
-	//open the file
-	fin.open(filename.c_str());
 
-	//check to see if the file can open
-	if (fin.fail()){
-		cout<<"The file couldn't open. Try again..."<<endl;
-		main();
-	}
-	else{
-		//we opened the file
-		int lineInFile = 0;//keeps track of what line we're on
-		//loop until the end of the file contents		
-		while(!fin.eof()){
-			//assumption: each line contains 7 fields in the same order
-			
-			//declarations	
-			string tempId_str, tempName, tempStatus, tempRemStatus, tempType, tempX_str, tempY_str;
-			int tempId;
-			long  tempX,tempY;
-			Site tempSite;
-			
-			//go through line
-			getline(fin,tempId_str,','); //stop at ','
-			getline(fin,tempName,','); //stop at ','
-			getline(fin,tempStatus,','); //stop at ','
-			getline(fin,tempRemStatus,','); //stop at ','
-			getline(fin,tempType,','); //stop at ','
-			getline(fin,tempX_str,','); //stop at ','
-			getline(fin,tempY_str,'\r'); //stop at line-break '\r'
-			
-			//casting to appropriate datatypes
-			tempId = atoi(tempId_str.c_str());
-			tempX = atol(tempX_str.c_str());
-			tempY = atol(tempY_str.c_str());
-			
-			//create a site, but only after the first line
-			if(lineInFile > 0){
-				tempSite = Site(tempId,tempName,tempStatus,tempRemStatus,tempType,tempX,tempY);
-			
-				//add site to SiteList			
-				mySites.addNew(tempSite);
-			}
-			lineInFile++; //going to the next line
-		}
-	}
-	
-	return mySites;
-}

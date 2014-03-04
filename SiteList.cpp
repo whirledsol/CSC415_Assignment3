@@ -5,20 +5,25 @@
 // Exercise : Assignment 3
 // Description: a seperate class to encapsulate an array of sites
 // Filename: SiteList.cpp
-// Last modified on: 2/24/2014
+// Last modified on: 3/4/2014
 #include <string>
 #include "Site.h"
 #include "SiteList.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
 using namespace std;
+
+
+
+
 /*
 constructor
 */
 SiteList::SiteList(){
 	arrayLength = 0;
 }
-
 
 /*
 adds a new site
@@ -31,8 +36,8 @@ bool SiteList::addNew(){
 	string status;
 	string remediationStatus;
 	string contaminationType;
-        long x;
-        long y;
+    long x;
+    long y;
 	
 	//ask the user for input
 	cout<<"#######################\nADD A NEW SITE"<<endl;
@@ -75,11 +80,9 @@ bool SiteList::addNew(){
 		cout<<"The Site already exists."<<endl;
 		return false;	
 	}
-	
-	
-
-  
 }
+
+
 
 /*
  * adds a new site with known Site obj
@@ -96,6 +99,8 @@ bool SiteList::addNew(Site newSite){
   }
   
 }
+
+
 /*
  *returns the status of a point, whether it is a site or not
  */
@@ -114,6 +119,7 @@ string SiteList::getStatus(long x, long y){
   return "";
   
 }
+
 
 /*
  *returns the status of a user-defined point
@@ -137,6 +143,7 @@ string SiteList::getStatus(){
   
 }
 
+
 /*
  * gets the size of the array
  */
@@ -158,11 +165,12 @@ bool SiteList::writeCSV(string location){
 		return false;
 	}
 	else{
+        //write first line
+        fout<<"Site Id,Site Name,Status,Remediation Status,Type of Contamination,X Coord,Y Coord\r";
 		//we opened the file, now write
 		for(int i=0;i<arrayLength;i++){
 			fout<<sites[i].toString()<<'\r';
 		}
-
 		//then close the file
 		fout.close();
 	}
@@ -170,11 +178,12 @@ bool SiteList::writeCSV(string location){
 	return true;
 }
 
+
 /**
 * writes a CSV output to a user-defined location
 */
 bool SiteList::writeCSV(){
-
+    //TODO: write header line
 	//declaration
 	string filename;
 	cout<<"Where would you like to write the file?"<<endl;
@@ -184,28 +193,86 @@ bool SiteList::writeCSV(){
 	
 	return returning;
 }
+
+
+/**
+ * asks for user input and parses file into sites
+ */
+bool SiteList::parseFromFile(){
+    string filename;//declaration
+    
+    //ask user for file location
+	cout<<"What file would like to input?"<<endl;
+	cin>>filename;//get input
+
+    //go to file designed for input only
+    bool returning = parseFromFile(filename);
+    return returning;
+}
+
+/**
+ * parses file into sites
+ */
+bool SiteList::parseFromFile(string filename){
+    
+    //declarations
+    ifstream fin;
+    
+    //open the file
+    fin.open(filename.c_str());
+    
+
+    //check to see if the file can open
+    if (fin.fail()){
+        return false;
+	}
+	else{
+		//we opened the file
+		int lineInFile = 0;//keeps track of what line we're on
+		//loop until the end of the file contents
+		while(!fin.eof()){
+			//assumption: each line contains 7 fields in the same order
+			
+			//declarations
+			string tempId_str, tempName, tempStatus, tempRemStatus, tempType, tempX_str, tempY_str;
+			int tempId;
+			long  tempX,tempY;
+			Site tempSite;
+			
+			//go through line
+			getline(fin,tempId_str,','); //stop at ','
+			getline(fin,tempName,','); //stop at ','
+			getline(fin,tempStatus,','); //stop at ','
+			getline(fin,tempRemStatus,','); //stop at ','
+			getline(fin,tempType,','); //stop at ','
+			getline(fin,tempX_str,','); //stop at ','
+			getline(fin,tempY_str,'\r'); //stop at line-break '\r'
+			
+			//casting to appropriate datatypes
+			tempId = atoi(tempId_str.c_str());
+			tempX = atol(tempX_str.c_str());
+			tempY = atol(tempY_str.c_str());
+			
+			//create a site, but only after the first line
+			if(lineInFile > 0){
+				tempSite = Site(tempId,tempName,tempStatus,tempRemStatus,tempType,tempX,tempY);
+                
+				//add site to SiteList
+				addNew(tempSite);
+			}
+			lineInFile++; //going to the next line
+		}
+	}
+    return true;
+}
+
+
+
+
 ////////////////////////////////////////////////////////////////////
 //      start PRIVATE METHODS
 ////////////////////////////////////////////////////////////////////
 
-/*
- * finds the first index of a site in the list
- */
-int SiteList::findSite(Site newSite){
-  
-  int index = -1; //set the index to the default value
-  
-  //go through array
-  for(int i=0; i<arrayLength; i++){
-    if(sites[i] == newSite){
-	//we found a match so index==i
-	index = i;
-    }
-  }
-  
-  return index;
-  
-}
 
 /*
  * finds the first site with the matching x and y
@@ -245,23 +312,57 @@ int SiteList::findSite(string name){
  * controls the status prediction of a point
  */
 string SiteList::predict(long x, long y){
-	cout<<"Predicting"<<endl;
 	Site closest[5];//create an empty array
 	getClosest(closest,x,y);//pass to getClosest
-	for(int i=0;i<5;i++){
-		cout<<closest[i].getDistance(x,y)<<" "<<closest[i].getStatus()<<endl;
-	}
 	
-  return "";  
+    /* //DEBUG
+    for(int i=0;i<5;i++){
+		cout<<closest[i].getDistance(x,y)<<" "<<closest[i].getStatus()<<endl;
+	}*/
+    
+    double average = 0;//the average: 0 = completely clear  -->  1 = completely contaminated
+    double sumWeights = 0; //the sum of all the weights
+    double p = 2.0; //the power
+    
+    //WE HAVE THE SURROUNDING SITES
+	//use inverse distance weighting (see: https://www.ems-i.com/smshelp/Data_Module/Interpolation/Inverse_Distance_Weighted.htm)
+    for (int i = 0; i<5;i++)
+    {
+        //only add data if the status is not complete
+        if(closest[i].getStatus() != "Incomplete"){
+            double weight = 1/(pow(closest[i].getDistance(x,y),p));
+            sumWeights +=weight;
+            average += weight*closest[i].hasSurroundingContamination();
+        }
+    }
+    average = average/sumWeights;
+    //cout<<"Average "<<average<<endl; //DEBUG
+    
+    
+    
+    
+    if(average > 0 && average < 0.33){
+        return "Clear";
+    }
+    else if (average >= 0.33 && average < 0.66){
+        return "Possibly Contaminated";
+    }
+    else{
+        return "Contaminated";
+    }
 }
 
-/*
+
+/**
  * returns the five closest sites
  */
 void SiteList::getClosest(Site closest[], long x, long y){
-  	cout<<"Getting closest sites"<<endl;
-	Site sortedSites[600] = sites;
+    //create a copy of the sites array that will be sorted
+	Site sortedSites[600];
+    copyArray(sites,sortedSites);
+    //sort that array based on distance from x,y
 	sortArray(sortedSites, x, y);
+    //get the top 5 and put into closest
 	for(int i=0;i<5;i++){
 		closest[i] = sortedSites[i];
 	}
@@ -269,7 +370,8 @@ void SiteList::getClosest(Site closest[], long x, long y){
   return;  
 }
 
-/*
+
+/**
  * sorts the array based on distance 
  */
 void SiteList::sortArray(Site incomingArray[], long x, long y){
@@ -293,4 +395,20 @@ void SiteList::sortArray(Site incomingArray[], long x, long y){
 
 	}  
 }
+
+
+/**
+ * copies the contents of one array to another
+ */
+void SiteList::copyArray(const Site from[], Site to[]){
+    for (int i=0;i<600; i++){
+        //Site tempSite = from[i];
+        to[i] = from[i];
+    }
+    
+}
+
+
+
+
 

@@ -23,6 +23,7 @@ Site::Site(int an_id, string a_name, string a_status, string a_remediationStatus
    contaminationType = a_contaminationType;
    x = a_x;
    y = a_y;
+    
 }
 
 Site::Site(){
@@ -42,23 +43,34 @@ long Site::getY() const{
 string Site::getStatus() const{
     return status;
 }
-string Site::getRemediationStatus() const{
-	return remediationStatus;
-}
-string Site::getContaminationType() const{
-	return contaminationType;
-}
 string Site::getName() const{
     return name;
 }
 
 
 /**
+ * hasSurroundingContamination
+ */
+bool Site::hasSurroundingContamination() const {
+    
+    
+    //based on in-class discussion only clear and Pending receipt of waiver are considered clear sites; the rest is unknown or contaminated
+    if (status == "Clear"|| status == "Pending receipt of waiver")
+    {
+        return false;
+    }
+    else{
+        return true;
+    }
+    
+}
+
+/**
  * getDistance: returns the distance between the site object and the input x and y
  */
 double Site::getDistance(long inputX, long inputY){
     double distance;
-    distance = sqrt(pow(inputX-x,2)+pow(inputY-y,2));
+    distance = sqrt(pow((double) inputX-x,2)+pow((double)   inputY-y,2));
     return distance;
 }
 
@@ -70,25 +82,6 @@ string Site::toString() const{
 	ss << id << "," << name << "," << status << "," << remediationStatus << "," << contaminationType << "," << x << "," << y;
 	return ss.str();
 }
-
-/**
- * overloads the equality opperator
- */
- bool Site::operator== (Site &other) const{
- 
-  //two sites are equal if their ids are equal
-  bool condition = id == other.getId();
-  condition = condition && name == other.getName();
-  condition = condition && x == other.getX();
-  condition = condition && y == other.getY();
-  condition = condition && x == other.getX();
-  condition = condition && remediationStatus == other.getRemediationStatus();
-  condition = condition && status == other.getStatus();
-  condition = condition && contaminationType == other.getContaminationType();
-  return condition;
-  
-}
-
 
 
 
