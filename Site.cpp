@@ -5,7 +5,7 @@
 // Exercise : Assignment 3
 // Description: class functions for a Site object
 // Filename: Site.cpp
-// Last modified on: 2/24/2014
+// Last modified on: 3/3/2014
 #include "Site.h"
 #include <string>
 #include <cmath>
