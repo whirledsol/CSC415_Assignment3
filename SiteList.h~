@@ -3,7 +3,7 @@
 // Semester: Spring 2014
 // Instructor: Dr. Pulimood
 // Exercise : Assignment 3
-// Description: a header file for the SiteList obj
+// Description: a seperate class to encapsulate an array of sites
 // Filename: SiteList.h
 // Last modified on: 3/4/2014
 #include <string>

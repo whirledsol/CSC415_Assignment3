@@ -1,0 +1,125 @@
+Script started on Tue 04 Mar 2014 08:31:34 PM EST
+]0;will@will-Lenovo: ~/Assignment3will@will-Lenovo:~/Assignment3$ g=[K++ *.cpp -o assignment3Exec
+]0;will@will-Lenovo: ~/Assignment3will@will-Lenovo:~/Assignment3$ ./assignment3Exec
+What file would like to input?
+sites.csv
+What would you like to do? Type 'h' for help.
+h
+#######################
+   Command                        Action
+         a                Add a New Site
+         s        Get/Predict the status
+         o                   Output List
+         h                          Help
+         x             Exit this Program
+#######################
+What would you like to do? Type 'h' for help.
+a
+#######################
+ADD A NEW SITE
+######################
+Input Id
+12345
+Input Name
+Test Site
+Input Status
+Clear
+Input Remediation Status
+NA
+Input Contamination Type
+NA
+Input X coordinate
+42999
+Input Y coordinate
+429028 
+What would you like to do? Type 'h' for help.
+a
+#######################
+ADD A NEW SITE
+######################
+Input Id
+jf
+Could not add the new site. Try again.
+What would you like to do? Type 'h' for help.
+Not a recognized command. Press 'h' for help.
+What would you like to do? Type 'h' for help.
+a
+#######################
+ADD A NEW SITE
+######################
+Input Id
+2837
+Input Name
+Test
+Input Status
+Clear
+Input Remediation Status
+NA
+Input Contamination Type
+NA
+Input X coordinate
+gjgjg
+Could not add the new site. Try again.
+What would you like to do? Type 'h' for help.
+Not a recognized command. Press 'h' for help.
+What would you like to do? Type 'h' for help.
+h
+#######################
+   Command                        Action
+         a                Add a New Site
+         s        Get/Predict the status
+         o                   Output List
+         h                          Help
+         x             Exit this Program
+#######################
+What would you like to do? Type 'h' for help.
+s
+#######################
+Specify the X coordinate:
+422621
+Specify the Y coordinate:
+524871
+The status is: DEP case
+#######################
+What would you like to do? Type 'h' for help.
+s
+#######################
+Specify the X coordinate:
+422623
+Specify the Y coordinate:
+524871
+The status is: Contaminated
+#######################
+What would you like to do? Type 'h' for help.
+h
+#######################
+   Command                        Action
+         a                Add a New Site
+         s        Get/Predict the status
+         o                   Output List
+         h                          Help
+         x             Exit this Program
+#######################
+What would you like to do? Type 'h' for help.
+o
+Where would you like to write the file?
+sites_test.csv
+#######################
+Written to file.
+#######################
+What would you like to do? Type 'h' for help.
+h
+#######################
+   Command                        Action
+         a                Add a New Site
+         s        Get/Predict the status
+         o                   Output List
+         h                          Help
+         x             Exit this Program
+#######################
+What would you like to do? Type 'h' for help.
+x
+]0;will@will-Lenovo: ~/Assignment3will@will-Lenovo:~/Assignment3$ exit
+exit
+
+Script done on Tue 04 Mar 2014 08:34:51 PM EST

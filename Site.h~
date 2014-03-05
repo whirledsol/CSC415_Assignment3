@@ -5,7 +5,7 @@
 // Exercise : Assignment 3
 // Description: a header file for a Site object
 // Filename: Site.h
-// Last modified on: 3/4/2014
+// Last modified on: 2/24/2014
 #include <string>
 
 class Site {
